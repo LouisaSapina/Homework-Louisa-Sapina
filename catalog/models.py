@@ -1,8 +1,6 @@
 from django.db import models 
-from django.urls import reverse #Used to generate URLs by reversing the URL patterns
+from django.urls import reverse
 
-
-# Create your models here.
 class Genre(models.Model):
     """
     Model representing a book genre (e.g. Science Fiction, Non Fiction).
@@ -80,10 +78,10 @@ class Book(models.Model):
         """
         return self.title
 
-import uuid # Required for unique book instances
+import uuid 
 from datetime import date
 
-from django.contrib.auth.models import User  # Required to assign User as a borrower
+from django.contrib.auth.models import User 
 
 class BookInstance(models.Model):
     """

@@ -10,10 +10,6 @@ from .models import Author, Genre, Book, BookInstance, Language
 admin.site.register(Genre)
 admin.site.register(Language)
 
-
-# Register the admin class with the associated model
-# Register the Admin classes for Book using the decorator
-
 class BooksInline(admin.TabularInline):
     """Defines format of inline book insertion (used in AuthorAdmin)"""
     model = Book
@@ -34,10 +30,6 @@ class BookAdmin(admin.ModelAdmin):
     
 admin.site.unregister(Author)
 admin.site.register(Author, AuthorAdmin)
-
-
-
-# Register the Admin classes for BookInstance using the decorator
 
 @admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
