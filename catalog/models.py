@@ -56,7 +56,8 @@ class Book(models.Model):
 import uuid 
 from datetime import date
 
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
+
 
 class BookInstance(models.Model):
     """
@@ -68,6 +69,12 @@ class BookInstance(models.Model):
     due_back = models.DateField(null=True, blank=True)
     borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
+
     LOAN_STATUS = (
         ('m', 'Maintenance'),
         ('o', 'On loan'),
@@ -77,13 +84,16 @@ class BookInstance(models.Model):
 
     status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Book availability')
 
-
 class Meta:
         ordering = ["due_back"]
+        permissions = (("can_mark_returned", "Set book as returned"),)
         
 
         def __str__(self):
             return '%s (%s)' % (self.id,self.book.title)
+
+
+
 
 class Meta:
         ordering = ['last_name', 'first_name']
