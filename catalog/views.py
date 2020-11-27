@@ -43,6 +43,7 @@ class BookDetailView(LoginRequiredMixin, generic.DetailView):
 class AuthorListView(LoginRequiredMixin, generic.ListView):
     """Generic class-based list view for a list of authors."""
     model = Author
+    paginate_by = 10
 
 
 
@@ -69,7 +70,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 import datetime
 
-from .forms import RenewBookModelForm
+from .forms import RenewBookForm
 
 @login_required
 @permission_required('catalog.can_mark_returned')
@@ -83,7 +84,7 @@ def renew_book_librarian(request, pk):
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request (binding):
-        form = RenewBookModelForm(request.POST)
+        form = RenewBookForm(request.POST)
 
         # Check if the form is valid:
         if form.is_valid():
@@ -97,7 +98,7 @@ def renew_book_librarian(request, pk):
     # If this is a GET (or any other method) create the default form.
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewBookModelForm(initial={'due_back': proposed_renewal_date,})
+        form = RenewBookForm(initial={'due_back': proposed_renewal_date,})
 
     return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst':book_inst})
 
